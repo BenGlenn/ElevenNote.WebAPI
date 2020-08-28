@@ -36,24 +36,24 @@ namespace ElevenNote.Services
         }
 
         public IEnumerable<NoteListItem> GetNotes() // PLEASE BREAK THIS METHOD DOWN //
-        {
+        {   //creates a temporary instance of ApplicationDbContext
             using (var ctx = new ApplicationDbContext())
-            {
-                var query =
-                    ctx
-                        .Notes
-                        .Where(e => e.OwnerId == _userId)
-                        .Select(
-                            e =>
-                                new NoteListItem
+            {// instantiates an IQueryable called query
+                var query = 
+                    ctx   // <--- our ApplicationDbContext object from line 40
+                        .Notes      // <--- Notes DbSet<Note>
+                        .Where(e => e.OwnerId == _userId)  //<--- filters through Notes for entities with an OwnerId that matches the current User's Id
+                        .Select(    //<--- Iterates through the entities that passed through the filter, and performs whatever code you put inside its body
+                            e =>  //<--- uses a lamba to take whatever entity the .Select method is currently running code for (e is our Note entity)
+                                new NoteListItem    //<--- creates a new NoteListItem to essentially "copy" the properties from e (our Note) to the NoteListItem
                                 {
                                     NoteId = e.NoteId,
                                     Title = e.Title,
                                     CreatedUtc = e.CreatedUtc
-                                }
+                                }                           //<--- This NoteListItem is added to our IQueryable object query
                         );
 
-                return query.ToArray();
+                return query.ToArray();     // <--- converts our IQueryable object to an Array
             }
         }
     }
