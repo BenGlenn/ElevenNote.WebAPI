@@ -35,7 +35,7 @@ namespace ElevenNote.Services
             }
         }
 
-        public IEnumerable<NoteListItem> GetNotes()
+        public IEnumerable<NoteListItem> GetNotes() // PLEASE BREAK THIS METHOD DOWN //
         {
             using (var ctx = new ApplicationDbContext())
             {
